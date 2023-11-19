@@ -9,4 +9,4 @@ log_dbg("Text", [["feild1", "data"], ["feild2", "data"]])
 ```
 
 #### Output:
-![Output of the example code](https://github.com/thisisbrrt/py-logger/example.png?raw=true)
+![Output of the example code](https://raw.githubusercontent.com/thisisbrrt/py-logger/main/example.png)
