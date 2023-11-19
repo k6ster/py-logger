@@ -3,9 +3,13 @@ Basic Python console logger.
 
 ### Usage:
 ```python
-log_suc("Text", [["feild1", "data"], ["feild2", "data"]])
-log_err("Text", [["feild1", "data"], ["feild2", "data"]])
-log_dbg("Text", [["feild1", "data"], ["feild2", "data"]])
+log_suc("Text", [["field1", "data"], ["field2", "data"]])
+log_err("Text", [["field1", "data"], ["field2", "data"]])
+log_dbg("Text", [["field1", "data"], ["field2", "data"]])
+log_wrn("Text", [["field1", "data"], ["field2", "data"]])
+
+# Would clear the terminal
+# clear_terminal()
 ```
 
 #### Output:
