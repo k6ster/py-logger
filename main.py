@@ -1,66 +1,64 @@
 import time
 import os
 
-RED     = "\x1b[31;1m"
-GREEN   = "\x1b[32;1m"
-GRAY    = "\x1b[38;5;244m"
-YELLOW  = "\x1b[33m"
-PURPLE  = "\x1b[35m"
-ORANGE  = "\x1b[38;5;202m"
-RESET   = "\x1b[0m"
+class Logger:
+	def __init__(self):
+		self.default_colors = {
+			"suc": "\x1b[32;1m",        # Green
+			"err": "\x1b[31;1m",        # Red
+			"dbg": "\x1b[38;5;244m",    # Gray
+			"wrn": "\x1b[38;5;202m",    # Orange
+			"time": "\x1b[33m",         # Yellow
+			"field": "\x1b[35m",        # Purple
+			"RESET": "\x1b[0m",         # Reset Styling, should not be changed
+		}
 
-def log_suc(text: str, fields = []):
-	now = time.localtime()
-	current_time = time.strftime("%H:%M:%S", now)
+		self.colors = self.default_colors.copy()
 
-	msg = f"{YELLOW}{current_time}{RESET} {GREEN}SUC{RESET} {text}"
+	def set_color(self, color, value):
+		self.colors[color] = value
 
-	for field in fields:
-		msg = f"{msg} {PURPLE}{field[0]}: {RESET}{field[1]} "
+	def reset_color(self):
+		self.colors = self.default_colors.copy()
 
-	print(msg)
+	def __log(self, color: str, type: str, text: str, fields = []):
+		time_color = self.colors['time']
+		reset_color = self.colors['RESET']
+		field_color = self.colors['field']
+		primary_color = self.colors[color]
 
-def log_err(text: str, fields = []):
-	now = time.localtime()
-	current_time = time.strftime("%H:%M:%S", now)
+		now = time.localtime()
+		current_time = time.strftime("%H:%M:%S", now)
 
-	msg = f"{YELLOW}{current_time}{RESET} {RED}ERR{RESET} {text}"
+		msg = f"{time_color}{current_time}{reset_color} {primary_color}{type}{reset_color} {text}"
 
-	for field in fields:
-		msg = f"{msg} {PURPLE}{field[0]}: {RESET}{field[1]} "
+		for field in fields:
+			msg = f"{msg} {field_color}{field[0]}: {reset_color}{field[1]} "
 
-	print(msg)
+		print(msg)
 
-def log_dbg(text: str, fields = []):
-	now = time.localtime()
-	current_time = time.strftime("%H:%M:%S", now)
+	def log_suc(self, text: str, fields = []):
+		self.__log('suc', 'SUC', text, fields)
 
-	msg = f"{YELLOW}{current_time}{RESET} {GRAY}DBG{RESET} {text}"
+	def log_err(self, text: str, fields = []):
+		self.__log('err', 'ERR', text, fields)
 
-	for field in fields:
-		msg = f"{msg} {PURPLE}{field[0]}: {RESET}{field[1]} "
+	def log_dbg(self, text: str, fields = []):
+		self.__log('dbg', 'DBG', text, fields)
 
-	print(msg)
-
-def log_wrn(text: str, fields = []):
-	now = time.localtime()
-	current_time = time.strftime("%H:%M:%S", now)
-
-	msg = f"{YELLOW}{current_time}{RESET} {ORANGE}WRN{RESET} {text}"
-
-	for field in fields:
-		msg = f"{msg} {PURPLE}{field[0]}: {RESET}{field[1]} "
-
-	print(msg)
-def clear_terminal():
-	if os.name == 'nt':
-		os.system('cls')
-	else:
-		os.system('clear')
+	def log_wrn(self, text: str, fields = []):
+		self.__log('wrn', 'WRN', text, fields)
+	def clear_terminal(self):
+		if os.name == 'nt':
+			os.system('cls')
+		else:
+			os.system('clear')
 
 if __name__ == "__main__":
-	log_suc("Text", [["field1", "data"], ["field2", "data"]])
-	log_err("Text", [["field1", "data"], ["field2", "data"]])
-	log_dbg("Text", [["field1", "data"], ["field2", "data"]])
-	log_wrn("Text", [["field1", "data"], ["field2", "data"]])
+	print('\n')
+	logger = Logger()
+	logger.log_suc("Text", [["field1", "data"], ["field2", "data"]])
+	logger.log_err("Text", [["field1", "data"], ["field2", "data"]])
+	logger.log_dbg("Text", [["field1", "data"], ["field2", "data"]])
+	logger.log_wrn("Text", [["field1", "data"], ["field2", "data"]])
 
