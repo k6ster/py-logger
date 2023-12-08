@@ -48,6 +48,7 @@ class Logger:
 
 	def log_wrn(self, text: str, fields = []):
 		self.__log('wrn', 'WRN', text, fields)
+		
 	def clear_terminal(self):
 		if os.name == 'nt':
 			os.system('cls')
